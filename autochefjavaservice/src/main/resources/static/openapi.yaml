@@ -1,0 +1,107 @@
+openapi: 3.0.1
+info:
+  title: AutoChef API
+  description: The GenAI-powered Recipe Generator API.
+  version: 0.0.1-SNAPSHOT
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /api/v1/generate-recipe:
+    post:
+      summary: Generate a new recipe
+      description: Generates one or more recipe suggestions based on a user-provided prompt.
+      operationId: generateRecipe
+      requestBody:
+        description: The user's prompt and preferences.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: Successful recipe generation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeResponse'
+        '400':
+          description: Invalid input (e.g., empty prompt)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Flour
+        quantity:
+          type: number
+          format: double
+          example: 1.5
+        unit:
+          type: string
+          example: cups
+
+    Recipe:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Simple Pancakes
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        instructions:
+          type: string
+          example: "1. Mix ingredients. 2. Cook on griddle."
+        cookTimeMinutes:
+          type: integer
+          example: 15
+
+    RecipeRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          example: "I have flour, eggs, and milk"
+        dietaryPreferences:
+          type: array
+          items:
+            type: string
+          example: ["vegetarian"]
+        locale:
+          type: string
+          example: "en-US"
+
+    RecipeResponse:
+      type: object
+      properties:
+        recipes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recipe'
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "INVALID_PROMPT"
+        message:
+          type: string
+          example: "The provided prompt was empty or invalid."
