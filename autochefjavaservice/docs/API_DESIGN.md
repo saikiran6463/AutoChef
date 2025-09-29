@@ -143,7 +143,11 @@ Input validation → ensure prompt is present & non-empty.
 
 Logging → log request metadata (timestamp, request ID, prompt hash).
 
-Forward to Python LLM Service → call REST endpoint (mocked in MVP). The URL for this service will be externalized in `application.properties`.
+Forward to Python LLM Service → call REST endpoint. The URL for this service will be externalized in `application.properties`.
+    - **Implementation Strategy:**
+        - The downstream call will be made using Spring's non-blocking `WebClient` (from the `spring-boot-starter-webflux` dependency).
+        - A `WebClient` bean will be configured at startup with the base URL of the Python service.
+        - The `RecipeServiceImpl` will use this `WebClient` bean to send the `RecipeRequest` and receive the `RecipeResponse`.
 
 Response handling:
 
