@@ -1,0 +1,21 @@
+# Local Python virtual environment
+.venv/
+venv/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Test / development artifacts
+uvicorn.pid
+*.log
+
+# Environment files
+.env
+.env.*
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
