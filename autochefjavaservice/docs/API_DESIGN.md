@@ -175,6 +175,53 @@ The primary downstream dependency is the Python LLM service responsible for reci
 
 **Response Contract:** The Python service is expected to return a `200 OK` with a JSON body that strictly mirrors the `RecipeResponse` model defined in Section 4. The root object must contain a `recipes` array, where each element is a complete `Recipe` object.
 
+## Downstream Error Responses
+
+The Python FastAPI service returns structured error responses in the following format:
+
+```json
+{
+    "code": "<ERROR_CODE>",
+    "message": "<human readable message>"
+}
+```
+
+### Error Scenarios
+
+| HTTP Status | Error Code | Description | Example Trigger |
+|-------------|------------|-------------|-----------------|
+| 400 | `BAD_REQUEST` | Malformed JSON or invalid request structure | Invalid JSON syntax |
+| 400 | `INVALID_PROMPT` | Missing or blank prompt field | `{"dietaryPreferences": ["gluten-free"]}` |
+| 500 | `GENERATION_FAILED` | Unexpected error during recipe generation | Internal service exception |
+
+### Example Error Responses
+
+**Missing Prompt (400):**
+```json
+{
+    "code": "INVALID_PROMPT",
+    "message": "Prompt is required and cannot be blank."
+}
+```
+
+**Malformed Request (400):**
+```json
+{
+    "code": "BAD_REQUEST", 
+    "message": "Malformed request or invalid JSON."
+}
+```
+
+**Generation Failure (500):**
+```json
+{
+    "code": "GENERATION_FAILED",
+    "message": "Failed to generate recipe."
+}
+```
+
+These structured error responses allow the Java gateway to handle downstream failures gracefully and provide meaningful feedback to clients.
+
 8. Security (The Who)
    MVP
 
