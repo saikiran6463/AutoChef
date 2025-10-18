@@ -5,6 +5,7 @@ package com.autochef.autochefjavaservice.dto;
  * Using a consistent error structure across the API is a best practice.
  */
 public record ErrorResponse(
+    int status,
     String code,
     String message
 ) {}
