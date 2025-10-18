@@ -90,9 +90,10 @@ Wrapper for a list of recipes.
 
 ErrorResponse
 
-Standard error object.
+Standard error object with HTTP status code for enhanced debugging.
 
 {
+"status": 502,
 "code": "LLM_DOWN",
 "message": "Failed to reach recipe generation service."
 }
@@ -100,7 +101,9 @@ Standard error object.
 
 Fields:
 
-code (string) → machine-readable error code.
+status (integer) → HTTP status code for easier debugging and client handling.
+
+code (string) → machine-readable error code from centralized ErrorCode enum.
 
 message (string) → human-readable explanation.
 
@@ -166,6 +169,57 @@ Error Handling Rules
 504 Gateway Timeout → Python LLM service is available but took too long to respond.
 
 500 Internal Server Error → unexpected exceptions.
+
+## Comprehensive Error Handling Implementation
+
+The Java gateway implements robust error handling with centralized error codes, custom exceptions, and comprehensive WebClient error wrapping.
+
+### Architecture Components
+
+**ErrorCode Enum** → Centralized error codes and messages in `constants/ErrorCode.java`. Eliminates hardcoded strings and ensures consistency across the application.
+
+**Custom Exceptions** → Domain-specific exceptions that carry ErrorCode context:
+- `ValidationException` → Request validation failures (400 errors)
+- `DownstreamServiceException` → Python service issues (502/504 errors)
+
+**ValidationService** → Centralized request validation logic. Currently validates prompt requirements, easily extensible for future validation rules.
+
+**GlobalExceptionHandler** → Comprehensive exception handling using `@RestControllerAdvice`:
+- Maps ValidationException → 400 Bad Request
+- Maps HttpMessageNotReadableException → 400 Bad Request (malformed JSON)
+- Maps DownstreamServiceException → 502/504 based on error type
+- Maps unexpected Exception → 500 Internal Server Error
+
+**Enhanced WebClient Integration** → 30-second timeout with comprehensive error wrapping. All WebClient exceptions (connection failures, HTTP errors, timeouts) are caught and wrapped in DownstreamServiceException for consistent handling.
+
+### Error Response Examples
+
+**Validation Error (400):**
+```json
+{
+  "status": 400,
+  "code": "INVALID_PROMPT",
+  "message": "Prompt is required and cannot be blank."
+}
+```
+
+**Downstream Service Error (502):**
+```json
+{
+  "status": 502,
+  "code": "LLM_DOWN", 
+  "message": "Failed to reach recipe generation service."
+}
+```
+
+**Timeout Error (504):**
+```json
+{
+  "status": 504,
+  "code": "LLM_TIMEOUT",
+  "message": "Recipe generation service timed out."
+}
+```
 
 7. Downstream Service Contracts
 
