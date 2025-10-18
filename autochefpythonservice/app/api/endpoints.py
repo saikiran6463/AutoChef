@@ -8,10 +8,7 @@ logger = logging.getLogger("autochefpythonservice")
 
 @router.post("/generate-recipe", response_model=schemas.RecipeResponse)
 async def generate_recipe(request: schemas.RecipeRequest):
-    if not request.prompt or not request.prompt.strip():
-        # return structured invalid prompt error
-        raise HTTPException(status_code=400, detail={"code": "INVALID_PROMPT", "message": "Prompt is required and cannot be blank."})
-
+    
     try:
         # Minimal mock implementation: echo prompt as a simple recipe title
         recipe = schemas.Recipe(
