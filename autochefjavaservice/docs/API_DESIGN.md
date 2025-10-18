@@ -245,7 +245,6 @@ The Python FastAPI service returns structured error responses in the following f
 | HTTP Status | Error Code | Description | Example Trigger |
 |-------------|------------|-------------|-----------------|
 | 400 | `BAD_REQUEST` | Malformed JSON or invalid request structure | Invalid JSON syntax |
-| 400 | `INVALID_PROMPT` | Missing or blank prompt field | `{"dietaryPreferences": ["gluten-free"]}` |
 | 500 | `GENERATION_FAILED` | Unexpected error during recipe generation | Internal service exception |
 
 ### Example Error Responses
