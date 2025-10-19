@@ -1,21 +1,24 @@
 from fastapi import APIRouter, HTTPException
 from app.models import schemas
+from app.services.bedrock_service import BedrockService
 import logging
 
 router = APIRouter()
 logger = logging.getLogger("autochefpythonservice")
+
+# Initialize BedrockService
+bedrock_service = BedrockService()
 
 
 @router.post("/generate-recipe", response_model=schemas.RecipeResponse)
 async def generate_recipe(request: schemas.RecipeRequest):
     
     try:
-        # Minimal mock implementation: echo prompt as a simple recipe title
-        recipe = schemas.Recipe(
-            title=f"Recipe for: {request.prompt}",
-            ingredients=[schemas.Ingredient(name="Salt", quantity=1, unit="tsp")],
-            instructions="Mix ingredients and cook.",
-            cookTimeMinutes=10,
+        # Use BedrockService to generate real recipe
+        recipe = bedrock_service.generate_recipe(
+            prompt=request.prompt,
+            dietary_preferences=request.dietaryPreferences,
+            locale=request.locale
         )
 
         return schemas.RecipeResponse(recipes=[recipe])
