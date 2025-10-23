@@ -2,11 +2,3 @@ fastapi
 uvicorn[standard]
 pydantic
 boto3
-
-Commands to run the servers :
-
-Java API Gateway : cd autochefjavaservice
-./mvnw spring-boot:run
-
-Python Fast API Server : cd autochefpythonservice
-.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 5001 --reload
