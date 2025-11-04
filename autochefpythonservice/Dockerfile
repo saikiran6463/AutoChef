@@ -19,10 +19,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # This comes after pip install to optimize caching
 COPY app/ ./app/
 
-# Expose port 5001 where FastAPI will run
+# Expose port 8000 where FastAPI will run
 # This is documentation - doesn't actually publish the port
-EXPOSE 5001
+EXPOSE 8000
 
 # Command to run the application
-# uvicorn runs the FastAPI app on all interfaces (0.0.0.0) port 5001
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5001"]
+# uvicorn runs the FastAPI app on all interfaces (0.0.0.0) port 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

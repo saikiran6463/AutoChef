@@ -1,0 +1,28 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole",
+                "iam:PassRole",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "cloudformation:*",
+                "ecr:*",
+                "ecs:*",
+                "ec2:*",
+                "elasticloadbalancing:*",
+                "logs:*",  
+                "ssm:GetParameter",
+                "ssm:PutParameter",
+                "s3:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
