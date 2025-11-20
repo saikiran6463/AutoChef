@@ -42,7 +42,7 @@ Represents input from the user.
 {
 "prompt": "I have chicken and garlic",
 "dietaryPreferences": ["low-carb"],
-"locale": "en-US"
+"cuisine": "italian",
 }
 
 
@@ -52,7 +52,7 @@ prompt (string, required) → User’s text describing ingredients or constraint
 
 dietaryPreferences (array[string], optional) → Filters like "vegetarian", "gluten-free".
 
-locale (string, optional) → For localized instructions.
+cuisine (enum, required) -> For Cuisine Style
 
 Recipe
 
@@ -303,3 +303,6 @@ Tracing: use request IDs to correlate across Java & Python services.
 Should recipes be persisted immediately (DynamoDB) or only on-demand?
 
 How do we handle multi-turn conversations (e.g., “make it spicier”)?
+
+
+11. As of 11/19/25 replaced  `locale` with `Cuisine` field in `RecipeRequest` in the AutoChefJavaService.

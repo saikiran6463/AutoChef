@@ -6,6 +6,7 @@ package com.autochef.autochefjavaservice.constants;
  */
 public enum ErrorCode {
     INVALID_PROMPT("INVALID_PROMPT", "Prompt is required and cannot be blank."),
+    INVALID_CUISINE("INVALID_CUISINE", "Cuisine is required and must be a valid enum value."),
     BAD_REQUEST("BAD_REQUEST", "Malformed request or invalid JSON."),
     LLM_DOWN("LLM_DOWN", "Failed to reach recipe generation service."),
     LLM_TIMEOUT("LLM_TIMEOUT", "Recipe generation service timed out."),
