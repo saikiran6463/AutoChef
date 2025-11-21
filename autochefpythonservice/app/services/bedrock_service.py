@@ -46,15 +46,14 @@ class BedrockService:
             logger.error(f"Failed to initialize Bedrock client: {e}")
             raise
     
-    def generate_recipe(self, prompt: str, dietary_preferences: Optional[List[str]] = None, locale: Optional[str] = None) -> Recipe:
+    def generate_recipe(self, prompt: str, cuisine: str, dietary_preferences: Optional[List[str]] = None) -> Recipe:
         """
         Generate a recipe using Claude 3 Haiku based on the provided prompt.
         
         Args:
             prompt (str): User's recipe request (e.g., "I have chicken and garlic")
             dietary_preferences (list, optional): Dietary restrictions/preferences
-            locale (str, optional): Cooking style/locale preference
-            
+            cuisine (str): Cuisine type (e.g., "INDIAN", "ITALIAN", "MEXICAN", "THAI")            
         Returns:
             Recipe: Parsed recipe DTO from Claude's response
             
@@ -62,13 +61,10 @@ class BedrockService:
             ClientError: When Bedrock API call fails
             Exception: For other unexpected errors
         """
-        # Log prompt summary for debugging
-        prompt_summary = self.prompt_builder.get_prompt_summary(prompt, dietary_preferences, locale)
-        logger.info(f"Generating recipe - Base: '{prompt}', Dietary: {prompt_summary['dietary_preferences']}, Locale: {prompt_summary['locale']}")
         
         try:
             # Use PromptBuilder to create the combined prompt
-            combined_prompt = self.prompt_builder.build_combined_prompt(prompt, dietary_preferences, locale)
+            combined_prompt = self.prompt_builder.build_combined_prompt(prompt, dietary_preferences, cuisine)
             messages = [
                 {
                     "role": "user",

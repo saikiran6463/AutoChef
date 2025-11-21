@@ -64,16 +64,15 @@ Guidelines for your responses:
 - Ensure recipes are achievable for home cooks
 - Be creative with titles while keeping them descriptive
 - Do not include any text outside the JSON response"""
-    
-    def build_user_prompt(self, prompt: str, dietary_preferences: Optional[List[str]] = None, locale: Optional[str] = None) -> str:
+
+    def build_user_prompt(self, prompt: str,  cuisine: str, dietary_preferences: Optional[List[str]] = None) -> str:
         """
         Build the user prompt that incorporates specific recipe requirements.
         
         Args:
             prompt (str): User's recipe request
             dietary_preferences (list, optional): Dietary restrictions
-            locale (str, optional): Cooking style preference
-            
+            cuisine (str): Cuisine type (e.g., "INDIAN", "ITALIAN", "MEXICAN", "THAI")
         Returns:
             str: The complete user prompt with all requirements
         """
@@ -86,17 +85,17 @@ Guidelines for your responses:
             user_prompt += f"\n\nDietary requirements: {preferences_text}"
             user_prompt += "\nEnsure the recipe accommodates these dietary needs."
         
-        # Add locale/style preferences if provided
-        if locale:
-            user_prompt += f"\n\nCooking style preference: {locale}"
-            user_prompt += f"\nAdapt the recipe to reflect {locale} culinary traditions where appropriate."
+        # Add cuisine preference
+        if cuisine:
+            user_prompt += f"\n\nCuisine preference: {cuisine}"
+            user_prompt += "\nFocus on this cuisine style in the recipe."
         
         # Final JSON reminder
         user_prompt += "\n\nProvide your response as valid JSON only, following the exact format specified above."
         
         return user_prompt
-    
-    def build_combined_prompt(self, prompt: str, dietary_preferences: Optional[List[str]] = None, locale: Optional[str] = None) -> str:
+
+    def build_combined_prompt(self, prompt: str,  cuisine: str, dietary_preferences: Optional[List[str]] = None) -> str:
         """
         Build a combined prompt that includes both system instructions and user request.
         
@@ -106,8 +105,7 @@ Guidelines for your responses:
         Args:
             prompt (str): User's recipe request
             dietary_preferences (list, optional): Dietary restrictions
-            locale (str, optional): Cooking style preference
-            
+            cuisine (str): Cuisine type (e.g., "INDIAN", "ITALIAN", "MEXICAN", "THAI")            
         Returns:
             str: The complete combined prompt ready for Bedrock API
         """
@@ -117,30 +115,9 @@ Guidelines for your responses:
         # Add clear separator and user request section
         combined_prompt += "\n\n" + "="*50 + "\n"
         combined_prompt += "USER REQUEST:\n"
-        
-        # Add the user-specific prompt  
-        user_section = self.build_user_prompt(prompt, dietary_preferences, locale)
+
+        # Add the user-specific prompt
+        user_section = self.build_user_prompt(prompt, dietary_preferences, cuisine)
         combined_prompt += user_section
         
         return combined_prompt
-    
-    def get_prompt_summary(self, prompt: str, dietary_preferences: Optional[List[str]] = None, locale: Optional[str] = None) -> dict:
-        """
-        Get a summary of the prompt that will be generated (useful for logging/debugging).
-        
-        Args:
-            prompt (str): User's recipe request
-            dietary_preferences (list, optional): Dietary restrictions
-            locale (str, optional): Cooking style preference
-            
-        Returns:
-            dict: Summary of prompt components
-        """
-        return {
-            "base_prompt": prompt,
-            "dietary_preferences": dietary_preferences or [],
-            "locale": locale,
-            "has_dietary_restrictions": bool(dietary_preferences),
-            "has_locale_preference": bool(locale),
-            "estimated_tokens": len(self.build_combined_prompt(prompt, dietary_preferences, locale).split()) * 1.3  # Rough estimate
-        }

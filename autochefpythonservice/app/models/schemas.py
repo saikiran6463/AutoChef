@@ -1,11 +1,11 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 from pydantic import BaseModel
 
 
 class RecipeRequest(BaseModel):
     prompt: str
     dietaryPreferences: Optional[List[str]] = None
-    locale: Optional[str] = None
+    cuisine: Literal["INDIAN", "ITALIAN", "MEXICAN", "THAI"] 
 
 
 class Ingredient(BaseModel):

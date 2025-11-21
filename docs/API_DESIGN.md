@@ -12,7 +12,7 @@ Future Objective: Support recipe retrieval, user preferences, analytics, and cac
 
 MVP-first: Start small with one endpoint (POST /api/v1/generate-recipe).
 
-Extensible: Design models and contracts with room to evolve (user preferences, locale, recipe IDs).
+Extensible: Design models and contracts with room to evolve (user preferences, cuisine(changed from local to cuisine), recipe IDs).
 
 Production-minded: Separate concerns (Java gateway, Python LLM, DB layer).
 
@@ -225,7 +225,7 @@ The Java gateway implements robust error handling with centralized error codes, 
 
 The primary downstream dependency is the Python LLM service responsible for recipe generation.
 
-**Request Contract:** This Java gateway will send a POST request to the Python service. The request body will be a JSON object mirroring the `RecipeRequest` model, containing the `prompt`, `dietaryPreferences`, and `locale`.
+**Request Contract:** This Java gateway will send a POST request to the Python service. The request body will be a JSON object mirroring the `RecipeRequest` model, containing the `prompt`, `dietaryPreferences`, and `cuisine`.
 
 **Response Contract:** The Python service is expected to return a `200 OK` with a JSON body that strictly mirrors the `RecipeResponse` model defined in Section 4. The root object must contain a `recipes` array, where each element is a complete `Recipe` object.
 
@@ -306,3 +306,6 @@ How do we handle multi-turn conversations (e.g., “make it spicier”)?
 
 
 11. As of 11/19/25 replaced  `locale` with `Cuisine` field in `RecipeRequest` in the AutoChefJavaService.
+
+12. As of 11/20/25 plumbed the `locale` to `Cuisine` field in the AutoChefPythonService. 
+    Now Bedrock is returing recipes in the specified cusuine style.

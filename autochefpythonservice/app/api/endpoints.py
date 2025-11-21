@@ -18,7 +18,7 @@ async def generate_recipe(request: schemas.RecipeRequest):
         recipe = bedrock_service.generate_recipe(
             prompt=request.prompt,
             dietary_preferences=request.dietaryPreferences,
-            locale=request.locale
+            cuisine=request.cuisine
         )
 
         return schemas.RecipeResponse(recipes=[recipe])
