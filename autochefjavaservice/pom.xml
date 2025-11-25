@@ -74,6 +74,11 @@
 			<artifactId>dynamodb-enhanced</artifactId>
 			<version>2.25.10</version>
 		</dependency>
+		<!-- Adding Redis Dependency-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
 
 	</dependencies>
 

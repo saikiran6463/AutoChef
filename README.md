@@ -12,3 +12,7 @@ Java API Gateway : cd autochefjavaservice
 
 Python Fast API Server : cd autochefpythonservice
 .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 5001 --reload
+
+To Spin up Java Service with Caching Disabled
+docker stop autochef-redis (can manually do it in the docker desktop)
+CACHE_TYPE=none REDIS_AUTOCONFIGURE=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration ./mvnw spring-boot:run

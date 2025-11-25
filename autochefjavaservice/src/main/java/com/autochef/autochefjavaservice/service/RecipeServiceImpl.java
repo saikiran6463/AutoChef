@@ -8,6 +8,8 @@ import com.autochef.autochefjavaservice.entity.RecipeEntity;
 import com.autochef.autochefjavaservice.exception.DownstreamServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -29,6 +31,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Cacheable(value = "recipes")
     public RecipeResponse generateRecipe(RecipeRequest request) {
         try {
            RecipeResponse recipeResponse = webClient.post()

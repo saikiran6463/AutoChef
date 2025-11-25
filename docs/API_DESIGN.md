@@ -309,3 +309,5 @@ How do we handle multi-turn conversations (e.g., “make it spicier”)?
 
 12. As of 11/20/25 plumbed the `locale` to `Cuisine` field in the AutoChefPythonService. 
     Now Bedrock is returing recipes in the specified cusuine style.
+
+13. As od 11/24/25 implemented DyanamoDb layer to store the receipes and also implemented a caching layer using redis run through locally with docker to cache the receipes . For now cache hit is based on entire prompt should match. But can improvise using semanctic caching with vector embeddings in future    
